@@ -13,3 +13,34 @@ with his band?
 
 One of the most important tricks for dealing with
 multi-provenance data is traceability and debuggability.
+In this chapter, we'll explore ways of keeping track of
+the source of our data, techniques for backing out
+bad data, and the business value of adopting such
+abilities.
+
+## Why?
+
+The ability to trace a datum back to its origin is important
+for several reasons. It helps us to back-out or reprocess bad data,
+and controversially, it allows us to reward and boost good data
+sources and processing techniques.
+
+## Software Analogy
+
+In order to develop a repertoire for debugging data, we'll lean
+heavily on debugging techniques borrowed from software development.
+In particular, we'll take advantage of data immutability, a
+technique popular in functional programming, that allows us to
+model change, while still preserving a view toward the past.
+
+### A Brief Functional Programming Tangent
+
+In popular imperative languages, data tends to be mutable.
+For example, if I want to sort a list, I might call
+`myList.sort()`. This will sort the in-place. Consequently, all
+references to `myList` will be changed. If we want to get a view
+back to `myList` before it was sorted, we'd have to explicitly
+make a copy. Functional languages, on the other hand, tend to treat
+data immutably. Our list sorting example becomes something closer
+to `myNewSortedList = sort(myList)`. This retains the unsorted
+list `myList`.
