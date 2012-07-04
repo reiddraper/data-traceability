@@ -1,0 +1,15 @@
+# Debugging Data
+
+Your software consistently provides impressive music recommendations
+by combining cultural and audio data. Customers are happy.
+However, things aren't always perfect. Sometimes that Beyoncé track is
+attributed to Beyonce. The artist for the Béla Fleck solo album shows up as
+Béla Fleck and the Flecktones. Worse, the 宇多田ヒカル biography
+has the artist name listed as ??????. Where did things go wrong?
+Did one of your customers provide you with data in an incorrect
+character encoding? Did one of the web-crawlers have a bug? Perhaps
+the name resolution code was incorrectly combining a solo artist
+with his band?
+
+One of the most important tricks for dealing with
+multi-provenance data is traceability and debuggability.
