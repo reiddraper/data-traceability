@@ -41,6 +41,41 @@ business value by allowing us to provide stronger measurements
 on the "worth" of a particular source, realize where to
 focus our development effort, and even manage blame.
 
+## Personal Experience
+
+I previously worked as the data ingestion team lead at
+a music data company. We provided artist and song recommendations,
+artist biographies, news, and detailed audio analysis of digital
+music. The data is exposed via a web service, along with
+data dumps. Many of the data feeds are composed of many sources
+of data which are cleaned, transformed, and put through
+machine learning algorithms. One of the first issues we ran
+into was learning how to trace a particular result back to its
+constituent parts. If a particular artist recommendation
+was poor, was it because of our machine learning algorithm?
+Did we simply not have enough data for that artist? Was there
+some obviously wrong data from one of our sources?
+
+Over the course of few years we developed several mechanisms
+for being able to debug our data woes. I'll explore several
+specific examples here.
+
+1. Snapshotting
+
+Many of our data sources are updated frequently. Web pages,
+for example, which we crawled for news, reviews, biography
+information and similarity, are updated inconsistently,
+and without notice. This means that even if we are able to trace
+a particular datum back to a source, the source may be
+drastically different than the time that we crawled or processed
+the data. This meant that we needed to not only capture the
+source of our data, but the time, and exact copy of the source.
+Our database columns or keys would then have an extra field for
+a timestamp. Keeping track of the time, and the original data
+also allows you to track changes from that source. You get closer
+to answering the question, "why were my recommendations for
+The Sea and Cake great last week, but terrible today?".
+
 ## Software Analogy
 
 In order to develop a repertoire for debugging data, we'll lean
