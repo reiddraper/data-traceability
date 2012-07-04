@@ -36,6 +36,10 @@ qem 2012/07/04: also helps when local custom or even law requires
    (Civil Code section 1798.83)]
 ////
 
+We'll also see later how data traceability can provide further
+business value by allowing us to provide stronger measurements
+on the "worth" of a particular source, realize where to
+focus our development effort, and even manage blame.
 
 ## Software Analogy
 
