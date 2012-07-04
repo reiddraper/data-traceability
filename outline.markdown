@@ -2,6 +2,7 @@
 
 * Intro
 * Why?
+* Job Narrative
 * Programming analogy
     * debugging
     * immutability
