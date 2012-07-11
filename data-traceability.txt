@@ -131,6 +131,38 @@ when you write each stage to be as pure as possible. This makes it easier
 to "set things up" without having the have actually redone each
 of the processing steps.
 
+5. Deflecting blame
+
+As much as the engineer in you wants to be able to always take
+responsiblity for what you produce, sometimes it's useful to be able
+to rightfully point blame at one of your data sources. For instance,
+if a particular customer is having a data quality issue, it might
+be helpful to know whether or not the origin of the issue was from
+data they gave you, or from your processing of the data they gave you.
+If it's the former, there is a real business value in being able to
+go back to the customer armed with the exact source of the issue
+and a proposed solution (or an already implemented solution). Perhaps
+blame is not the right word, but it is useful to sometimes point
+out that the data issue was not directly your processings' fault.
+
+6. Finding areas for improvement
+
+Related to blame is the ability to find places in your own processing
+and infrastructure that can be improved. For this reason, another
+"source" for data are your own processing stages. It's useful to know,
+for instance, when a certain piece of derived data was calculated. If there
+is an issue with it, it allows you to focus immediately on the place
+it was createded. Controversly, if a particular processing stage is
+tending to produce excellent results, it is helpful to be able to
+find out why it is doing so well, and ideally replicate this into
+more parts of your system. Organizationaly, this type of knowledge
+also allows you to help figure out where to focus more of your teams
+effort, and even reorganize your team structure. For example, you might
+want to place a new member of the team on one of the infrasture pieces that
+is doing well, and should be a model for other pieces first, as to give them
+a good starting place for learning the system. A more senior team member
+may be more effective on pieces of the infrastructure that are struggling.
+
 ## Software Analogy
 
 In order to develop a repertoire for debugging data, we'll lean
