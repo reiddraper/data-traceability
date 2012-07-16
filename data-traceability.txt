@@ -163,6 +163,10 @@ is doing well, and should be a model for other pieces first, as to give them
 a good starting place for learning the system. A more senior team member
 may be more effective on pieces of the infrastructure that are struggling.
 
+## An Example
+
+Here we'll go on a guided example.
+
 ## Software Analogy
 
 In order to develop a repertoire for debugging data, we'll lean
