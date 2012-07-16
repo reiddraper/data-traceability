@@ -125,6 +125,20 @@ parameterizable in a way that it was easy to exclude a particular
 source, or explitictly declare the sources that were allowed to
 affect this particular processing stage.
 
+5. Separating phases (and keeping them pure)
+
+Many times our data processing will be divided into several stages.
+It's important to identify the state barriers in your application,
+as this allows you to both write better code, and create more efficient
+infrastructure. From a code perspective, keeping each of our stages
+separate allows us to reduce side effects (I/O, etc.), which makes our
+code easier to test, partly because we don't have to set up mocks for
+half of our side-effecting infrastructure. From an infrastructure
+perspective, keeping things separate allows us to make isolated
+decisions about the compute power, parallelism, memory constraints, etc.
+of a given stage of the problem.
+
+
 TODO: also mention functional programming here and the ability
 to run the processing stage from an arbitrary point being easier
 when you write each stage to be as pure as possible. This makes it easier
