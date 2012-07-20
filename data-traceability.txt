@@ -16,15 +16,15 @@ multi-provenance data is traceability and debuggability.
 In this chapter, we'll explore ways of keeping track of
 the source of our data, techniques for backing out
 bad data, and the business value of adopting such
-abilities.
+ability.
 
 ## Why?
 
 The ability to trace a datum back to its origin is important
 for several reasons. It helps us to back-out or reprocess bad data,
-and controversially, it allows us to reward and boost good data
+and conversely, it allows us to reward and boost good data
 sources and processing techniques. Furthermore, local privacy
-laws can mandate things like auditability, data transfer
+laws can mandate things like audit-ability, data transfer
 restrictions and more (TODO: citation).
 
 ////
