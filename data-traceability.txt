@@ -43,6 +43,8 @@ focus our development effort, and even manage blame.
 
 ## Personal Experience
 
+(QUESTION: should the work be in past or present tense?)
+
 I previously worked as the data ingestion team lead at
 a music data company. We provided artist and song recommendations,
 artist biographies, news, and detailed audio analysis of digital
@@ -55,15 +57,15 @@ constituent parts. If a particular artist recommendation
 was poor, was it because of our machine learning algorithm?
 Did we simply not have enough data for that artist? Was there
 some obviously wrong data from one of our sources?
+Being able to debug our product became a business necessity.
 
-Over the course of few years we developed several mechanisms
-for being able to debug our data woes. I'll explore several
-specific examples here.
+We developed several mechanisms for being able to debug our data woes.
+I'll explore several specific examples here.
 
 1. Snapshotting
 
 Many of our data sources are updated frequently. Web pages,
-for example, which we crawled for news, reviews, biography
+for example, which were crawled for news, reviews, biography
 information and similarity, are updated inconsistently,
 and without notice. This means that even if we are able to trace
 a particular datum back to a source, the source may be
@@ -71,7 +73,7 @@ drastically different than the time that we crawled or processed
 the data. This meant that we needed to not only capture the
 source of our data, but the time, and exact copy of the source.
 Our database columns or keys would then have an extra field for
-a timestamp. Keeping track of the time, and the original data
+a time-stamp. Keeping track of the time, and the original data
 also allows you to track changes from that source. You get closer
 to answering the question, "why were my recommendations for
 The Sea and Cake great last week, but terrible today?".
@@ -82,7 +84,7 @@ Our data was stored in several different databases, including
 relational and key-value. However, nearly every schema had
 a source field. This field would contain one or more values.
 For original sources there would be a single source listed,
-but as data was processed and transformed into rollups or
+but as data was processed and transformed into roll-ups or
 learned-data, we would preserve the list of sources that went
 into creating that new piece of data. This allowed us to take
 even something like the final data product and figure out where
@@ -92,7 +94,7 @@ the constituent parts came.
 
 One of the most important things we did from data we collected
 was learn about new artists, albums and songs. However,
-we always want to create a new entity that would end up in
+we didn't always want to create a new entity that would end up in
 our final data product whenever we heard about a new name
 we had never heard. For example, certain data sources were
 more likely to have errors, misspellings and other inaccuracies
@@ -109,7 +111,7 @@ additively to the artist creation application.
 
 4. Backing out data
 
-Sometimes our data was bad. When this hapenned, we'd need to do
+Sometimes our data was bad. When this happened, we'd need to do
 several things. First, we'd want to take the data out of our
 production data product (if we were serving it live). Next,
 we'd want to figure out the potential source(s) of the offending data,
