@@ -151,7 +151,7 @@ of the processing steps.
 5. Deflecting blame
 
 As much as the engineer in you wants to be able to always take
-responsiblity for what you produce, sometimes it's useful to be able
+responsibility for what you produce, sometimes it's useful to be able
 to rightfully point blame at one of your data sources. For instance,
 if a particular customer is having a data quality issue, it might
 be helpful to know whether or not the origin of the issue was from
@@ -169,13 +169,13 @@ and infrastructure that can be improved. For this reason, another
 "source" for data are your own processing stages. It's useful to know,
 for instance, when a certain piece of derived data was calculated. If there
 is an issue with it, it allows you to focus immediately on the place
-it was createded. Controversly, if a particular processing stage is
+it was created. Conversely, if a particular processing stage is
 tending to produce excellent results, it is helpful to be able to
 find out why it is doing so well, and ideally replicate this into
-more parts of your system. Organizationaly, this type of knowledge
+more parts of your system. Organizationally, this type of knowledge
 also allows you to help figure out where to focus more of your teams
 effort, and even reorganize your team structure. For example, you might
-want to place a new member of the team on one of the infrasture pieces that
+want to place a new member of the team on one of the infrastructure pieces that
 is doing well, and should be a model for other pieces first, as to give them
 a good starting place for learning the system. A more senior team member
 may be more effective on pieces of the infrastructure that are struggling.
