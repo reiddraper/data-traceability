@@ -118,13 +118,14 @@ we'd want to figure out the potential source(s) of the offending data,
 and reprocess the product without that source. Sometimes the transformations
 that the data would go through were complicated enough that it was easier
 to simply reprocess the final data with all permutations of sources to
-spot the source of the bad data.
+spot the source of the bad data. This only possible since we had kept
+track of the sources that went into the final product.
 
 Because of this observation, we had to make it easy to redo any
 stage of the data transformation with an altered source list. Many
 of our data processing steps would therefore have the source list
 parameterizable in a way that it was easy to exclude a particular
-source, or explitictly declare the sources that were allowed to
+source, or explicitly declare the sources that were allowed to
 affect this particular processing stage.
 
 5. Separating phases (and keeping them pure)
