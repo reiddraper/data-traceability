@@ -227,6 +227,15 @@ counting links from shares of a particular article
 (was our regular expression mistaken, or was there a bug
 in our shortened-url -> full-url code?)
 
+## Change
+
+Keeping previous versions of the sites we crawl allows for some
+interesting analytics in the future. How many articles does the
+Boston Globe usually link to on their home page? Is there a bigger
+variety of news articles in the summer? We can start running
+new analytics without having to only use data since we turned
+the analytics on. We have a clear view of the past.
+
 ## Software Analogy
 
 In order to develop a repertoire for debugging data, we'll lean
