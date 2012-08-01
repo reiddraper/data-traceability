@@ -182,7 +182,50 @@ may be more effective on pieces of the infrastructure that are struggling.
 
 ## An Example
 
-Here we'll go on a guided example.
+Here we'll go on a guided example. Let's imagine we're building
+a news aggregation site. The homepage will display the top
+stories of the day, with the ability to drill down by topic.
+Each story will also have a link to display coverage of the same
+event from other sources.
+
+We'll need to be able to do several things:
+
+1. Crawl the web for news stories
+1. Determine story popularity/timeliness via shares on social media,
+and perhaps source (we assume a story on the New York Times homepage
+is important/popular).
+1. Cluster stories about the same event together.
+1. Determine event popularity (maybe this will be aggregate popularity
+of the individual stories?).
+
+### Crawlers
+
+We'll seed our crawlers with a number of known news sites. Every so
+often (perhaps 10 times a day for heavily updated pages, and once a
+day for lesser updated pages) we'll download the contents of the page
+and store it under a composite key with URL, source and timestamp,
+or a relational database row with those atributes.
+
+From each of these home pages we crawl, we'll download the individual
+linked stories. The stories will also be saved with URL, source
+and timestamp attributes. Additionally, we'll store the composite
+ID of the homepage where we were linked to this story. That way,
+if, for example, later we suspect we have a bug with the way
+we assign story popularity based on home page placement, we can
+go look at the home page as it was retrieved at a particular point
+in time. Ideally we should be able to trace data from our
+own homepage all the way back to the original HTML that
+our first crawler downloaded.
+
+In order to help determine popularity, and to further feed
+our news crawlers, we'll also be crawling social media
+sites. Just like with the news crawlers, we'll want
+to keep a timestamped record of the HTML and other assets
+we crawl. Again, this will let us go back later and debug
+our code, if for example we suspect we are incorrectly
+counting links from shares of a particular article
+(was our regular expression mistaken, or was there a bug
+in our shortened-url -> full-url code?)
 
 ## Software Analogy
 
@@ -192,7 +235,7 @@ In particular, we'll take advantage of data immutability, a
 technique popular in functional programming, that allows us to
 model change, while still preserving a view toward the past.
 
-### A Brief Functional Programming Tangent
+## A Brief Functional Programming Tangent
 
 In popular imperative languages, data tends to be mutable.
 For example, if I want to sort a list, I might call
