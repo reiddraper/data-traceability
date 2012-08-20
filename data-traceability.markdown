@@ -24,7 +24,7 @@ The ability to trace a datum back to its origin is important
 for several reasons. It helps us to back-out or reprocess bad data,
 and conversely, it allows us to reward and boost good data
 sources and processing techniques. Furthermore, local privacy
-laws can mandate things like audit-ability, data transfer
+laws can mandate things like auditability, data transfer
 restrictions and more (TODO: citation).
 
 ////
@@ -41,9 +41,37 @@ business value by allowing us to provide stronger measurements
 on the "worth" of a particular source, realize where to
 focus our development effort, and even manage blame.
 
-## Personal Experience
+## Software Analogy
 
-(QUESTION: should the work be in past or present tense?)
+In order to develop a repertoire for debugging data, we'll lean
+heavily on debugging techniques borrowed from software development.
+In particular, we'll take advantage of data immutability, a
+technique popular in functional programming, that allows us to
+model change, while still preserving a view toward the past.
+
+## A Brief Functional Programming Tangent
+
+In popular imperative languages, data tends to be mutable.
+For example, if I want to sort a list, I might call
+`myList.sort()`. This will sort the in-place. Consequently, all
+references to `myList` will be changed. If we want to get a view
+back to `myList` before it was sorted, we'd have to explicitly
+make a copy. Functional languages, on the other hand, tend to treat
+data as immutable. Our list sorting example becomes something closer
+to `myNewSortedList = sort(myList)`. This retains the unsorted
+list `myList`. One of the advantages of this is that many functions
+become simply the result of processing the values passed in. This means
+given a stack trace, we can often reproduce bugs immediately. With mutable
+data, there is no guarantee that the value of a particular variable
+remains the same throughout the execution of the function. Because of this,
+we can't necessarily rely on a stack trace to reproduce bugs. You'll see
+that one of the ways we take advantage of immutability is by persisting
+our data not only under it's normal identifier, but with a compound
+identifier + timestamp. This will help aid us find the exact inputs to
+any of our data processing steps, should we need to go back and debug
+them.
+
+## Personal Experience
 
 I previously worked as the data ingestion team lead at
 a music data company. We provided artist and song recommendations,
@@ -64,7 +92,7 @@ I'll explore several specific examples here.
 
 1. Snapshotting
 
-Many of our data sources are updated frequently. Web pages,
+Many of the data sources were updated frequently. Web pages,
 for example, which were crawled for news, reviews, biography
 information and similarity, are updated inconsistently,
 and without notice. This means that even if we are able to trace
@@ -106,20 +134,20 @@ like learning about new artists, we'd assign a trust-score to each
 source, that would, amongst other things, determine whether a new
 artist was created that would make its way into our final product,
 or would add weight to that artist being created if we ever heard
-of him/her again. In this way, several lower-weighted sources act
+of them again. In this way, several lower-weighted sources act
 additively to the artist creation application.
 
 4. Backing out data
 
 Sometimes our data was bad. When this happened, we'd need to do
 several things. First, we'd want to take the data out of our
-production data product (if we were serving it live). Next,
-we'd want to figure out the potential source(s) of the offending data,
-and reprocess the product without that source. Sometimes the transformations
-that the data would go through were complicated enough that it was easier
-to simply reprocess the final data with all permutations of sources to
-spot the source of the bad data. This only possible since we had kept
-track of the sources that went into the final product.
+production data product. Next, we'd want to figure out the potential source(s)
+of the offending data, and reprocess the product without that source.
+Sometimes the transformations that the data would go through were complicated
+enough that it was easier to simply reprocess the final data with all
+permutations of sources to spot the source of the bad data.
+This only possible since we had kept track of the sources that went into
+the final product.
 
 Because of this observation, we had to make it easy to redo any
 stage of the data transformation with an altered source list. Many
@@ -130,7 +158,7 @@ affect this particular processing stage.
 
 5. Separating phases (and keeping them pure)
 
-Many times our data processing will be divided into several stages.
+Many times our data processing would be divided into several stages.
 It's important to identify the state barriers in your application,
 as this allows you to both write better code, and create more efficient
 infrastructure. From a code perspective, keeping each of our stages
@@ -140,13 +168,6 @@ half of our side-effecting infrastructure. From an infrastructure
 perspective, keeping things separate allows us to make isolated
 decisions about the compute power, parallelism, memory constraints, etc.
 of a given stage of the problem.
-
-
-TODO: also mention functional programming here and the ability
-to run the processing stage from an arbitrary point being easier
-when you write each stage to be as pure as possible. This makes it easier
-to "set things up" without having the have actually redone each
-of the processing steps.
 
 5. Deflecting blame
 
@@ -158,9 +179,7 @@ be helpful to know whether or not the origin of the issue was from
 data they gave you, or from your processing of the data they gave you.
 If it's the former, there is a real business value in being able to
 go back to the customer armed with the exact source of the issue
-and a proposed solution (or an already implemented solution). Perhaps
-blame is not the right word, but it is useful to sometimes point
-out that the data issue was not directly your processings' fault.
+and a proposed solution, or an already implemented solution.
 
 6. Finding areas for improvement
 
@@ -236,22 +255,3 @@ variety of news articles in the summer? We can start running
 new analytics without having to only use data since we turned
 the analytics on. We have a clear view of the past.
 
-## Software Analogy
-
-In order to develop a repertoire for debugging data, we'll lean
-heavily on debugging techniques borrowed from software development.
-In particular, we'll take advantage of data immutability, a
-technique popular in functional programming, that allows us to
-model change, while still preserving a view toward the past.
-
-## A Brief Functional Programming Tangent
-
-In popular imperative languages, data tends to be mutable.
-For example, if I want to sort a list, I might call
-`myList.sort()`. This will sort the in-place. Consequently, all
-references to `myList` will be changed. If we want to get a view
-back to `myList` before it was sorted, we'd have to explicitly
-make a copy. Functional languages, on the other hand, tend to treat
-data immutably. Our list sorting example becomes something closer
-to `myNewSortedList = sort(myList)`. This retains the unsorted
-list `myList`.
