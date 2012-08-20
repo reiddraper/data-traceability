@@ -223,13 +223,13 @@ We'll seed our crawlers with a number of known news sites. Every so
 often (perhaps 10 times a day for heavily updated pages, and once a
 day for lesser updated pages) we'll download the contents of the page
 and store it under a composite key with URL, source and timestamp,
-or a relational database row with those atributes.
+or a relational database row with those attributes.
 
 From each of these home pages we crawl, we'll download the individual
 linked stories. The stories will also be saved with URL, source
 and timestamp attributes. Additionally, we'll store the composite
-ID of the homepage where we were linked to this story. That way,
-if, for example, later we suspect we have a bug with the way
+ID of the homepage where we were linked to this story. That way if,
+for example, later we suspect we have a bug with the way
 we assign story popularity based on home page placement, we can
 go look at the home page as it was retrieved at a particular point
 in time. Ideally we should be able to trace data from our
@@ -251,7 +251,6 @@ in our shortened-url -> full-url code?)
 Keeping previous versions of the sites we crawl allows for some
 interesting analytics in the future. How many articles does the
 Boston Globe usually link to on their home page? Is there a bigger
-variety of news articles in the summer? We can start running
-new analytics without having to only use data since we turned
-the analytics on. We have a clear view of the past.
-
+variety of news articles in the summer? Another useful byproduct of this
+is that we can run new analytics on past data. We're not confined to the
+data since we turned the new analytics on.
