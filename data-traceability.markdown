@@ -254,3 +254,11 @@ Boston Globe usually link to on their home page? Is there a bigger
 variety of news articles in the summer? Another useful byproduct of this
 is that we can run new analytics on past data. We're not confined to the
 data since we turned the new analytics on.
+
+
+## Conclusion
+
+Data processing code and infrastructure you create will need to be
+debugged, just like normal code. With a bit of foresight, you can
+dramatically improve your ability to reason about your system, and quickly
+adapt it to do new things.
