@@ -90,7 +90,7 @@ Being able to debug our product became a business necessity.
 We developed several mechanisms for being able to debug our data woes.
 I'll explore several specific examples here.
 
-1. Snapshotting
+### 1. Snapshotting
 
 Many of the data sources were updated frequently. Web pages,
 for example, which were crawled for news, reviews, biography
@@ -106,7 +106,7 @@ also allows you to track changes from that source. You get closer
 to answering the question, "why were my recommendations for
 The Sea and Cake great last week, but terrible today?".
 
-2. Saving the source
+### 2. Saving the source
 
 Our data was stored in several different databases, including
 relational and key-value. However, nearly every schema had
@@ -118,7 +118,7 @@ into creating that new piece of data. This allowed us to take
 even something like the final data product and figure out where
 the constituent parts came.
 
-3. Weighting sources.
+### 3. Weighting sources.
 
 One of the most important things we did from data we collected
 was learn about new artists, albums and songs. However,
@@ -137,7 +137,7 @@ or would add weight to that artist being created if we ever heard
 of them again. In this way, several lower-weighted sources act
 additively to the artist creation application.
 
-4. Backing out data
+### 4. Backing out data
 
 Sometimes our data was bad. When this happened, we'd need to do
 several things. First, we'd want to take the data out of our
@@ -156,7 +156,7 @@ parameterizable in a way that it was easy to exclude a particular
 source, or explicitly declare the sources that were allowed to
 affect this particular processing stage.
 
-5. Separating phases (and keeping them pure)
+### 5. Separating phases (and keeping them pure)
 
 Many times our data processing would be divided into several stages.
 It's important to identify the state barriers in your application,
@@ -169,7 +169,7 @@ perspective, keeping things separate allows us to make isolated
 decisions about the compute power, parallelism, memory constraints, etc.
 of a given stage of the problem.
 
-5. Deflecting blame
+### 6. Deflecting blame
 
 As much as the engineer in you wants to be able to always take
 responsibility for what you produce, sometimes it's useful to be able
@@ -181,7 +181,7 @@ If it's the former, there is a real business value in being able to
 go back to the customer armed with the exact source of the issue
 and a proposed solution, or an already implemented solution.
 
-6. Finding areas for improvement
+### 7. Finding areas for improvement
 
 Related to blame is the ability to find places in your own processing
 and infrastructure that can be improved. For this reason, another
