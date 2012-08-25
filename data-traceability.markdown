@@ -1,4 +1,4 @@
-# Debugging Data
+# Data Traceability
 
 Your software consistently provides impressive music recommendations
 by combining cultural and audio data. Customers are happy.
@@ -27,11 +27,11 @@ sources and processing techniques. Furthermore, local privacy
 laws can mandate things like audit-ability, data transfer
 restrictions and more. For example, California's Shine the Light
 Law requires businesses disclose the personal information that has
-been shared with third-parties, should I resident request. Europe's
+been shared with third-parties, should a resident request. Europe's
 Data Protection Directive provides even more stringent regulation
 to businesses collecting data about residents.
 
-We'll also see later how data traceability can provide further
+We'll also later see how data traceability can provide further
 business value by allowing us to provide stronger measurements
 on the worth of a particular source, realize where to
 focus our development effort, and even manage blame.
@@ -40,13 +40,13 @@ focus our development effort, and even manage blame.
 
 In order to develop a repertoire for debugging data, we'll lean
 heavily on debugging techniques borrowed from software development.
-In particular, we'll take advantage of data immutability, a
+In particular, we'll take advantage of immutable data, a
 technique popular in functional programming that allows us to
 model change, while still preserving a view toward the past.
 
-## A Brief Functional Programming Tangent
+### A Brief Functional Programming Tangent
 
-In popular imperative languages, data tends to be mutable.
+In imperative languages, data tends to be mutable.
 For example, if we want to sort a list, we might call
 `myList.sort()`. This will sort the list in-place. Consequently, all
 references to `myList` will be changed. If we want to get a view
@@ -55,7 +55,7 @@ make a copy. Functional languages, on the other hand, tend to treat
 data as immutable. Our list sorting example becomes something closer
 to `myNewSortedList = sort(myList)`. This retains the unsorted
 list `myList`. One of the advantages of this is that many functions
-become simply the result of processing the values passed in. This means
+become simply the result of processing the values passed in. This means that
 given a stack trace, we can often reproduce bugs immediately. With mutable
 data, there is no guarantee that the value of a particular variable
 remains the same throughout the execution of the function. Because of this,
@@ -73,7 +73,7 @@ a music data company. We provided artist and song recommendations,
 artist biographies, news, and detailed audio analysis of digital
 music. The data was exposed via a web service, along with
 data dumps. Many of the data feeds were composed of many sources
-of data which are cleaned, transformed, and put through
+of data which were cleaned, transformed, and put through
 machine learning algorithms. One of the first issues we ran
 into was learning how to trace a particular result back to its
 constituent parts. If a particular artist recommendation
@@ -103,7 +103,7 @@ The Sea and Cake great last week, but terrible today?".
 
 ### 2. Saving the source
 
-Our data was stored in several different databases, including
+Our data was stored in several different types of databases, including
 relational and key-value. However, nearly every schema had
 a source field. This field would contain one or more values.
 For original sources there would be a single source listed,
@@ -119,16 +119,16 @@ One of the most important things we did from data we collected
 was learn about new artists, albums and songs. However,
 we didn't always want to create a new entity that would end up in
 our final data product. Certain data sources were
-more likely to have errors, misspellings and other inaccuracies
-that we wanted to be vetted before they would progress through our system.
+more likely to have errors, misspellings and other inaccuracies.
+We wanted them to be vetted before they would progress through our system.
 Furthermore, we wanted to be able to give priority
 processing to certain sources that either had higher information
 value or were for a particular customer. For applications
 like learning about new artists, we'd assign a trust-score to each
 source, that would, amongst other things, determine whether a new
-artist was created that would make its way into our final product,
+artist was created,
 or would add weight to that artist being created if we ever heard
-of them again. In this way, several lower-weighted sources act
+of them again. In this way, several lower-weighted sources could act
 additively to the artist creation application.
 
 ### 4. Backing out data
@@ -154,12 +154,12 @@ affect this particular processing stage.
 
 Many times our data processing would be divided into several stages.
 It's important to identify the state barriers in your application,
-as this allows you to both write better code, and create more efficient
+as this allowed us to both write better code, and create more efficient
 infrastructure. From a code perspective, keeping each of our stages
-separate allows us to reduce side effects (I/O, etc.), which makes our
-code easier to test, partly because we don't have to set up mocks for
+separate allowed us to reduce side effects (I/O, etc.), which made our
+code easier to test, partly because we didn't have to set up mocks for
 half of our side-effecting infrastructure. From an infrastructure
-perspective, keeping things separate allows us to make isolated
+perspective, keeping things separate allowed us to make isolated
 decisions about the compute power, parallelism, memory constraints, etc.
 of a given stage of the problem.
 
@@ -179,17 +179,17 @@ and a proposed solution, or an already implemented solution.
 
 Related to blame is the ability to find places in your own processing
 and infrastructure that can be improved. For this reason, another
-"source" for data are your own processing stages. It's useful to know,
+source for data are your own processing stages. It's useful to know,
 for instance, when a certain piece of derived data was calculated. If there
 is an issue with it, it allows you to focus immediately on the place
 it was created. Conversely, if a particular processing stage is
 tending to produce excellent results, it is helpful to be able to
 find out why it is doing so well, and ideally replicate this into
-more parts of your system. Organizationally, this type of knowledge
+other parts of your system. Organizationally, this type of knowledge
 also allows you to help figure out where to focus more of your teams
 effort, and even reorganize your team structure. For example, you might
 want to place a new member of the team on one of the infrastructure pieces that
-is doing well, and should be a model for other pieces first, as to give them
+is doing well, and should be a model for other pieces, as to give them
 a good starting place for learning the system. A more senior team member
 may be more effective on pieces of the infrastructure that are struggling.
 
@@ -217,7 +217,7 @@ We'll seed our crawlers with a number of known news sites. Every so
 often (perhaps 10 times a day for heavily updated pages, and once a
 day for lesser updated pages) we'll download the contents of the page
 and store it under a composite key with URL, source and timestamp,
-or a relational database row with those attributes.
+or a relational database row with these attributes.
 
 From each of these home pages we crawl, we'll download the individual
 linked stories. The stories will also be saved with URL, source
@@ -228,7 +228,7 @@ we assign story popularity based on home page placement, we can
 go look at the home page as it was retrieved at a particular point
 in time. Ideally we should be able to trace data from our
 own homepage all the way back to the original HTML that
-our first crawler downloaded.
+our crawler downloaded.
 
 In order to help determine popularity, and to further feed
 our news crawlers, we'll also be crawling social media
@@ -240,19 +240,18 @@ counting links from shares of a particular article
 (was our regular expression mistaken, or was there a bug
 in our shortened-url -> full-url code?)
 
-## Change
+### Change
 
 Keeping previous versions of the sites we crawl allows for some
-interesting analytics in the future. How many articles does the
-Boston Globe usually link to on their home page? Is there a bigger
+interesting analytics. Historically, how many articles does the
+Boston Globe usually link to on their home page? Is there a larger
 variety of news articles in the summer? Another useful byproduct of this
 is that we can run new analytics on past data. We're not confined to the
 data since we turned the new analytics on.
 
-
 ## Conclusion
 
-Data processing code and infrastructure you create will need to be
+Data processing code and infrastructure will need to be
 debugged, just like normal code. With a bit of foresight, you can
 dramatically improve your ability to reason about your system, and quickly
 adapt it to do new things. Furthermore, we can draw from decades of experience
