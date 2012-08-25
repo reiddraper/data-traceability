@@ -24,21 +24,16 @@ The ability to trace a datum back to its origin is important
 for several reasons. It helps us to back-out or reprocess bad data,
 and conversely, it allows us to reward and boost good data
 sources and processing techniques. Furthermore, local privacy
-laws can mandate things like auditability, data transfer
-restrictions and more (TODO: citation).
-
-////
-qem 2012/07/04: also helps when local custom or even law requires
- you be able to track sources, such as California's "Shine The Light"
- law on data privacy.  I plan to mention this elsewhere in the book
- but it's also helpful/relevant here.
-   http://www.leginfo.ca.gov/cgi-bin/displaycode?section=civ&group=01001-02000&file=1798.80-1798.84
-   (Civil Code section 1798.83)]
-////
+laws can mandate things like audit-ability, data transfer
+restrictions and more. For example, California's Shine the Light
+Law requires businesses disclose the personal information that has
+been shared with third-parties, should I resident request. Europe's
+Data Protection Directive provides even more stringent regulation
+to businesses collecting data about residents.
 
 We'll also see later how data traceability can provide further
 business value by allowing us to provide stronger measurements
-on the "worth" of a particular source, realize where to
+on the worth of a particular source, realize where to
 focus our development effort, and even manage blame.
 
 ## Software Analogy
@@ -46,14 +41,14 @@ focus our development effort, and even manage blame.
 In order to develop a repertoire for debugging data, we'll lean
 heavily on debugging techniques borrowed from software development.
 In particular, we'll take advantage of data immutability, a
-technique popular in functional programming, that allows us to
+technique popular in functional programming that allows us to
 model change, while still preserving a view toward the past.
 
 ## A Brief Functional Programming Tangent
 
 In popular imperative languages, data tends to be mutable.
-For example, if I want to sort a list, I might call
-`myList.sort()`. This will sort the in-place. Consequently, all
+For example, if we want to sort a list, we might call
+`myList.sort()`. This will sort the list in-place. Consequently, all
 references to `myList` will be changed. If we want to get a view
 back to `myList` before it was sorted, we'd have to explicitly
 make a copy. Functional languages, on the other hand, tend to treat
@@ -66,18 +61,18 @@ data, there is no guarantee that the value of a particular variable
 remains the same throughout the execution of the function. Because of this,
 we can't necessarily rely on a stack trace to reproduce bugs. You'll see
 that one of the ways we take advantage of immutability is by persisting
-our data not only under it's normal identifier, but with a compound
-identifier + timestamp. This will help aid us find the exact inputs to
+our data not only under it's normal identifier, but with a compound key of
+identifier and time-stamp. This will help aid us find the exact inputs to
 any of our data processing steps, should we need to go back and debug
 them.
 
 ## Personal Experience
 
-I previously worked as the data ingestion team lead at
+I previously worked in the data ingestion team at
 a music data company. We provided artist and song recommendations,
 artist biographies, news, and detailed audio analysis of digital
-music. The data is exposed via a web service, along with
-data dumps. Many of the data feeds are composed of many sources
+music. The data was exposed via a web service, along with
+data dumps. Many of the data feeds were composed of many sources
 of data which are cleaned, transformed, and put through
 machine learning algorithms. One of the first issues we ran
 into was learning how to trace a particular result back to its
@@ -95,8 +90,8 @@ I'll explore several specific examples here.
 Many of the data sources were updated frequently. Web pages,
 for example, which were crawled for news, reviews, biography
 information and similarity, are updated inconsistently,
-and without notice. This means that even if we are able to trace
-a particular datum back to a source, the source may be
+and without notice. This means that even if we were able to trace
+a particular datum back to a source, the source may have been
 drastically different than the time that we crawled or processed
 the data. This meant that we needed to not only capture the
 source of our data, but the time, and exact copy of the source.
@@ -123,11 +118,10 @@ the constituent parts came.
 One of the most important things we did from data we collected
 was learn about new artists, albums and songs. However,
 we didn't always want to create a new entity that would end up in
-our final data product whenever we heard about a new name
-we had never heard. For example, certain data sources were
+our final data product. Certain data sources were
 more likely to have errors, misspellings and other inaccuracies
-that we wanted to be vetted before they would reach our final
-product. Furthermore, we wanted to be able to give priority
+that we wanted to be vetted before they would progress through our system.
+Furthermore, we wanted to be able to give priority
 processing to certain sources that either had higher information
 value or were for a particular customer. For applications
 like learning about new artists, we'd assign a trust-score to each
@@ -141,7 +135,7 @@ additively to the artist creation application.
 
 Sometimes our data was bad. When this happened, we'd need to do
 several things. First, we'd want to take the data out of our
-production data product. Next, we'd want to figure out the potential source(s)
+production data product. Next, we'd want to figure out the potential sources
 of the offending data, and reprocess the product without that source.
 Sometimes the transformations that the data would go through were complicated
 enough that it was easier to simply reprocess the final data with all
