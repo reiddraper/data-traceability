@@ -261,4 +261,6 @@ data since we turned the new analytics on.
 Data processing code and infrastructure you create will need to be
 debugged, just like normal code. With a bit of foresight, you can
 dramatically improve your ability to reason about your system, and quickly
-adapt it to do new things.
+adapt it to do new things. Furthermore, we can draw from decades of experience
+in software design to influence our data processing and infrastructure
+decisions.
