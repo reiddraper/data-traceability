@@ -111,7 +111,7 @@ but as data was processed and transformed into roll-ups or
 learned-data, we would preserve the list of sources that went
 into creating that new piece of data. This allowed us to take
 even something like the final data product and figure out where
-the constituent parts came.
+the constituent parts came from.
 
 ### 3. Weighting sources.
 
