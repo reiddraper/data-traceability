@@ -62,7 +62,7 @@ remains the same throughout the execution of the function. Because of this,
 we can't necessarily rely on a stack trace to reproduce bugs. You'll see
 that one of the ways we take advantage of immutability is by persisting
 our data not only under it's normal identifier, but with a compound key of
-identifier and time-stamp. This will help aid us find the exact inputs to
+identifier and time-stamp. This will aid us finding the exact inputs to
 any of our data processing steps, should we need to go back and debug
 them.
 
@@ -140,7 +140,7 @@ of the offending data, and reprocess the product without that source.
 Sometimes the transformations that the data would go through were complicated
 enough that it was easier to simply reprocess the final data with all
 permutations of sources to spot the source of the bad data.
-This only possible since we had kept track of the sources that went into
+This is only possible since we had kept track of the sources that went into
 the final product.
 
 Because of this observation, we had to make it easy to redo any
@@ -163,13 +163,12 @@ perspective, keeping things separate allowed us to make isolated
 decisions about the compute power, parallelism, memory constraints, etc.
 of a given stage of the problem.
 
-### 6. Deflecting blame
+### 6. Identifying the root cause
 
-As much as the engineer in you wants to be able to always take
-responsibility for what you produce, sometimes it's useful to be able
-to rightfully point blame at one of your data sources. For instance,
-if a particular customer is having a data quality issue, it might
-be helpful to know whether or not the origin of the issue was from
+Identifying the root cause of data issues is important to being able
+to fix them, and control customer relationships. For instance,
+if a particular customer is having a data quality issue, it
+is helpful to know whether the origin of the issue was from
 data they gave you, or from your processing of the data they gave you.
 If it's the former, there is a real business value in being able to
 go back to the customer armed with the exact source of the issue
@@ -186,7 +185,7 @@ it was created. Conversely, if a particular processing stage is
 tending to produce excellent results, it is helpful to be able to
 find out why it is doing so well, and ideally replicate this into
 other parts of your system. Organizationally, this type of knowledge
-also allows you to help figure out where to focus more of your teams
+also allows you to help figure out where to focus more of your teams'
 effort, and even reorganize your team structure. For example, you might
 want to place a new member of the team on one of the infrastructure pieces that
 is doing well, and should be a model for other pieces, as to give them
