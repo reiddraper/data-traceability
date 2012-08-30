@@ -37,37 +37,6 @@ business value by allowing us to provide stronger measurements
 on the worth of a particular source, realize where to
 focus our development effort, and even manage blame.
 
-## Software Analogy
-
-In order to develop a repertoire for debugging data, we'll lean
-heavily on debugging techniques borrowed from software development.
-In particular, we'll take advantage of immutable data, a
-technique popular in functional programming that allows us to
-model change, while still preserving a view toward the past.
-
-### A Brief Functional Programming Tangent
-
-In imperative languages like C, Java and Python, data tends to be mutable.
-For example, if we want to sort a list, we might call
-`myList.sort()`. This will sort the list in-place. Consequently, all
-references to `myList` will be changed. If we want to get a view
-back to `myList` before it was sorted, we'd have to explicitly
-make a copy. Functional languages like Haskell, Clojure and Erlang,
-on the other hand, tend to treat
-data as immutable. Our list sorting example becomes something closer
-to `myNewSortedList = sort(myList)`. This retains the unsorted
-list `myList`. One of the advantages of this is that many functions
-become simply the result of processing the values passed in. This means that
-given a stack trace, we can often reproduce bugs immediately. With mutable
-data, there is no guarantee that the value of a particular variable
-remains the same throughout the execution of the function. Because of this,
-we can't necessarily rely on a stack trace to reproduce bugs. You'll see
-that one of the ways we take advantage of immutability is by persisting
-our data not only under it's normal identifier, but with a compound key of
-identifier and time-stamp. This will aid us finding the exact inputs to
-any of our data processing steps, should we need to go back and debug
-them.
-
 ## Personal Experience
 
 I previously worked in the data ingestion team at
@@ -102,6 +71,8 @@ a time-stamp. Keeping track of the time, and the original data
 also allows you to track changes from that source. You get closer
 to answering the question, "why were my recommendations for
 The Sea and Cake great last week, but terrible today?".
+This process of writing data once and never changing it is called
+immutability.
 
 ### 2. Saving the source
 
@@ -194,10 +165,41 @@ is doing well, and should be a model for other pieces, as to give them
 a good starting place for learning the system. A more senior team member
 may be more effective on pieces of the infrastructure that are struggling.
 
+## Software Analogy
+
+In order to develop a repertoire for debugging data, we'll lean
+heavily on debugging techniques borrowed from software development.
+In particular, we'll take advantage of immutable data, a
+technique popular in functional programming that allows us to
+model change, while still preserving a view toward the past.
+
+### A Brief Functional Programming Tangent
+
+In imperative languages like C, Java and Python, data tends to be mutable.
+For example, if we want to sort a list, we might call
+`myList.sort()`. This will sort the list in-place. Consequently, all
+references to `myList` will be changed. If we want to get a view
+back to `myList` before it was sorted, we'd have to explicitly
+make a copy. Functional languages like Haskell, Clojure and Erlang,
+on the other hand, tend to treat
+data as immutable. Our list sorting example becomes something closer
+to `myNewSortedList = sort(myList)`. This retains the unsorted
+list `myList`. One of the advantages of this is that many functions
+become simply the result of processing the values passed in. This means that
+given a stack trace, we can often reproduce bugs immediately. With mutable
+data, there is no guarantee that the value of a particular variable
+remains the same throughout the execution of the function. Because of this,
+we can't necessarily rely on a stack trace to reproduce bugs. You'll see
+that one of the ways we take advantage of immutability is by persisting
+our data not only under it's normal identifier, but with a compound key of
+identifier and time-stamp. This will aid us finding the exact inputs to
+any of our data processing steps, should we need to go back and debug
+them.
+
 ## An Example
 
-Here we'll go on a guided example. Let's imagine we're building
-a news aggregation site. The homepage will display the top
+Imagine we're building a news aggregation site.
+The homepage will display the top
 stories of the day, with the ability to drill down by topic.
 Each story will also have a link to display coverage of the same
 event from other sources.
@@ -249,6 +251,28 @@ Boston Globe usually link to on their home page? Is there a larger
 variety of news articles in the summer? Another useful byproduct of this
 is that we can run new analytics on past data. We're not confined to the
 data since we turned the new analytics on.
+
+### Clustering
+
+Clustering data is a difficult problem, as outlying or mislabeled data
+can completely change our clusters. For this reason, it is important to
+be able to cheaply (in human and compute time) be able to experiment with
+rerunning our clustering with altered inputs. The inputs we alter may
+be removing data from a particular source, or adding a new topic modelling
+stage between crawling and clustering. In order to achieve this, our
+infrastructure must be loosely coupled enough that we can just as easily
+provide inputs to our clustering system for testing as we do in production.
+
+### Popularity
+
+Calculating story popularity shares many of the same issues as clustering
+stories. As we're experimenting, or debugging an issue, we want to quickly
+be able to test our changes and see the result. We also want to be able to
+see the most popular story on our own page and dive all the way back through
+our own processing to the origin site we crawled. If we find out we've ranked
+a story as more popular that we would've liked, we can trace it back to our
+origin crawl to see if perhaps, we had put too much weight in it's position
+on it's source site.
 
 ## Conclusion
 
