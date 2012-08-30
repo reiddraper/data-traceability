@@ -11,8 +11,9 @@ character encoding? Did one of the web-crawlers have a bug? Perhaps
 the name resolution code was incorrectly combining a solo artist
 with his band?
 
-One of the most important tricks for dealing with
-multi-provenance data is traceability and debuggability.
+How do we solve this problem?
+We'd like to be able to trace data back to it's origin, following
+each transformation. This is reified as data provenenace.
 In this chapter, we'll explore ways of keeping track of
 the source of our data, techniques for backing out
 bad data, and the business value of adopting such
