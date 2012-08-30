@@ -47,12 +47,13 @@ model change, while still preserving a view toward the past.
 
 ### A Brief Functional Programming Tangent
 
-In imperative languages, data tends to be mutable.
+In imperative languages like C, Java and Python, data tends to be mutable.
 For example, if we want to sort a list, we might call
 `myList.sort()`. This will sort the list in-place. Consequently, all
 references to `myList` will be changed. If we want to get a view
 back to `myList` before it was sorted, we'd have to explicitly
-make a copy. Functional languages, on the other hand, tend to treat
+make a copy. Functional languages like Haskell, Clojure and Erlang,
+on the other hand, tend to treat
 data as immutable. Our list sorting example becomes something closer
 to `myNewSortedList = sort(myList)`. This retains the unsorted
 list `myList`. One of the advantages of this is that many functions
