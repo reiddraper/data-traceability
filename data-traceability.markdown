@@ -165,13 +165,23 @@ is doing well, and should be a model for other pieces, as to give them
 a good starting place for learning the system. A more senior team member
 may be more effective on pieces of the infrastructure that are struggling.
 
-## Software Analogy
+## An Example
 
-In order to develop a repertoire for debugging data, we'll lean
-heavily on debugging techniques borrowed from software development.
-In particular, we'll take advantage of immutable data, a
-technique popular in functional programming that allows us to
-model change, while still preserving a view toward the past.
+Imagine we're building a news aggregation site.
+The homepage will display the top
+stories of the day, with the ability to drill down by topic.
+Each story will also have a link to display coverage of the same
+event from other sources.
+
+We'll need to be able to do several things:
+
+1. Crawl the web for news stories
+1. Determine story popularity/timeliness via shares on social media,
+and perhaps source (we assume a story on the New York Times homepage
+is important/popular).
+1. Cluster stories about the same event together.
+1. Determine event popularity (maybe this will be aggregate popularity
+of the individual stories?).
 
 ### A Brief Functional Programming Tangent
 
@@ -195,24 +205,6 @@ our data not only under it's normal identifier, but with a compound key of
 identifier and time-stamp. This will aid us finding the exact inputs to
 any of our data processing steps, should we need to go back and debug
 them.
-
-## An Example
-
-Imagine we're building a news aggregation site.
-The homepage will display the top
-stories of the day, with the ability to drill down by topic.
-Each story will also have a link to display coverage of the same
-event from other sources.
-
-We'll need to be able to do several things:
-
-1. Crawl the web for news stories
-1. Determine story popularity/timeliness via shares on social media,
-and perhaps source (we assume a story on the New York Times homepage
-is important/popular).
-1. Cluster stories about the same event together.
-1. Determine event popularity (maybe this will be aggregate popularity
-of the individual stories?).
 
 ### Crawlers
 
