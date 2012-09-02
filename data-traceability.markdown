@@ -59,9 +59,9 @@ I'll explore several specific examples here.
 ### 1. Snapshotting
 
 Many of the data sources were updated frequently. Web pages,
-for example, which were crawled for news, reviews, biography
-information and similarity, are updated inconsistently,
-and without notice. This means that even if we were able to trace
+which were crawled for news, reviews, biography
+information and similarity, were updated inconsistently.
+This means that even if we were able to trace
 a particular datum back to a source, the source may have been
 drastically different than the time that we crawled or processed
 the data. This meant that we needed to not only capture the
@@ -79,8 +79,8 @@ immutability.
 Our data was stored in several different types of databases, including
 relational and key-value. However, nearly every schema had
 a source field. This field would contain one or more values.
-For original sources there would be a single source listed,
-but as data was processed and transformed into roll-ups or
+For original sources there would be a single source listed.
+As data was processed and transformed into roll-ups or
 learned-data, we would preserve the list of sources that went
 into creating that new piece of data. This allowed us to take
 even something like the final data product and figure out where
@@ -99,8 +99,9 @@ processing to certain sources that either had higher information
 value or were for a particular customer. For applications
 like learning about new artists, we'd assign a trust-score to each
 source, that would, amongst other things, determine whether a new
-artist was created,
-or would add weight to that artist being created if we ever heard
+artist was created.
+If the artist wasn't created based solely on this source, it would
+add weight to that artist being created if we ever heard
 of them again. In this way, several lower-weighted sources could act
 additively to the artist creation application.
 
@@ -125,6 +126,7 @@ affect this particular processing stage.
 
 ### 5. Separating phases (and keeping them pure)
 
+Often we would divide our data processing into several stages.
 Many times our data processing would be divided into several stages.
 It's important to identify the state barriers in your application,
 as this allowed us to both write better code, and create more efficient
@@ -156,7 +158,7 @@ for instance, when a certain piece of derived data was calculated. If there
 is an issue with it, it allows you to focus immediately on the place
 it was created. Conversely, if a particular processing stage is
 tending to produce excellent results, it is helpful to be able to
-find out why it is doing so well, and ideally replicate this into
+find out why it is doing so well. Ideally you can replicate this into
 other parts of your system. Organizationally, this type of knowledge
 also allows you to help figure out where to focus more of your teams'
 effort, and even reorganize your team structure. For example, you might
@@ -230,10 +232,9 @@ our news crawlers, we'll also be crawling social media
 sites. Just like with the news crawlers, we'll want
 to keep a timestamped record of the HTML and other assets
 we crawl. Again, this will let us go back later and debug
-our code, if for example we suspect we are incorrectly
-counting links from shares of a particular article
-(was our regular expression mistaken, or was there a bug
-in our shortened-url -> full-url code?)
+our code. One example of why this would be useful is if
+we suspect we are incorrectly
+counting links from shares of a particular article.
 
 ### Change
 
@@ -241,18 +242,19 @@ Keeping previous versions of the sites we crawl allows for some
 interesting analytics. Historically, how many articles does the
 Boston Globe usually link to on their home page? Is there a larger
 variety of news articles in the summer? Another useful byproduct of this
-is that we can run new analytics on past data. We're not confined to the
-data since we turned the new analytics on.
+is that we can run new analytics on past data. Because immutability can give
+us a basis from the past, we're not confined to the
+data since we turned on our new analytics.
 
 ### Clustering
 
-Clustering data is a difficult problem, as outlying or mislabeled data
+Clustering data is a difficult problem. Outlying or mislabeled data
 can completely change our clusters. For this reason, it is important to
 be able to cheaply (in human and compute time) be able to experiment with
 rerunning our clustering with altered inputs. The inputs we alter may
 be removing data from a particular source, or adding a new topic modelling
 stage between crawling and clustering. In order to achieve this, our
-infrastructure must be loosely coupled enough that we can just as easily
+infrastructure must be loosely coupled such that we can just as easily
 provide inputs to our clustering system for testing as we do in production.
 
 ### Popularity
@@ -268,9 +270,9 @@ on it's source site.
 
 ## Conclusion
 
-Data processing code and infrastructure will need to be
-debugged, just like normal code. With a bit of foresight, you can
-dramatically improve your ability to reason about your system, and quickly
-adapt it to do new things. Furthermore, we can draw from decades of experience
+You will need to debug data processing code and infrastructure just like
+normal code. By taking advantage of techniques like immutability, you can
+dramatically improve your ability to reason about your system.
+Furthermore, we can draw from decades of experience
 in software design to influence our data processing and infrastructure
 decisions.
