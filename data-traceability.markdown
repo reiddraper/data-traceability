@@ -50,9 +50,9 @@ through machine learning algorithms.
 One of the first issues we ran into was learning how to trace a
 particular result back to its constituent parts. If a given
 artist recommendation was poor, was it because of our machine
-learning algorithm?  Did we simply not have enough data for that
+learning algorithm? Did we simply not have enough data for that
 artist? Was there some obviously wrong data from one of our
-sources?  Being able to debug our product became a business
+sources? Being able to debug our product became a business
 necessity.
 
 We developed several mechanisms for being able to debug our data
@@ -62,12 +62,12 @@ woes, some of which I'll explore here.
 
 Many of the data sources were updated frequently. At the same
 time, the web pages we crawled for news, reviews, biography
-information and similarity, were updated inconsistently.  This
+information and similarity, were updated inconsistently. This
 meant that even if we were able to trace a particular datum back
 to its source, that source may have been drastically different
 than the time we had previously crawled or processed the data. In
 turn, we needed to not only capture the source of our data, but
-the time, and exact copy of the source.  Our database columns or
+the time, and exact copy of the source. Our database columns or
 keys would then have an extra field for a timestamp.
 
 Keeping track of the time and the original data also allows you
@@ -88,7 +88,7 @@ For original sources there would be a single source listed.
 As data was processed and transformed into roll-ups or
 learned-data, we would preserve the list of sources that went
 into creating that new piece of data. This allowed us to trace
-the final data product back to its consituent parts.
+the final data product back to its constituent parts.
 
 ### Weighting sources.
 
@@ -114,13 +114,13 @@ application.
 ### Backing out data
 
 Sometimes we identified that data was simply incorrect or otherwise
-bad.  In such cases, we had to both remove the data from our
+bad. In such cases, we had to both remove the data from our
 production offering.
 
 Recall, our data would pass through several stages of transformation
-on its way to the production offering.  A backout, then, required that
+on its way to the production offering. A backout, then, required that
 we first identify potential sources of the bad data, then remove it,
-then reprocess the product without that source.  (Sometimes the data
+then reprocess the product without that source. (Sometimes the data
 transformations were so complex that it was easier to generate all
 permutations of source data, to spot the offender.) This is only
 possible since we had kept track of the sources that went into the
@@ -128,14 +128,14 @@ final product.
 
 Because of this observation, we had to make it easy to redo any
 stage of the data transformation with an altered source list. We
-designed our data processing pipeline to use parameterized sourcce
+designed our data processing pipeline to use parameterized source
 lists, so that it was easy to exclude a particular source, or
 explicitly declare the sources that were allowed to affect this
 particular processing stage.
 
 ### Separating phases (and keeping them pure)
 
-Often we would divide our data processing into several stages.  It's
+Often we would divide our data processing into several stages. It's
 important to identify the state barriers in your application, as doing
 this allowed us to both write better code, and create more efficient
 infrastructure.
@@ -155,7 +155,7 @@ Identifying the root cause of data issues is important to being able
 to fix them, and control customer relationships. For instance, if a
 particular customer is having a data quality issue, it is helpful to
 know whether the origin of the issue was from data they gave you, or
-from your processing of the data they gave you.  In the former case,
+from your processing of the data they gave you. In the former case,
 there is real business value in being able to show the customer the
 exact source of the issue, as well as your solution.
 
@@ -163,11 +163,11 @@ exact source of the issue, as well as your solution.
 ### Finding areas for improvement
 
 Related to blame is the ability to find sources of improvement in your
-own processing pipeline and infrastructure.  This means the steps in
+own processing pipeline and infrastructure. This means the steps in
 your processing pipeline become data sources in their own right.
 
 It's useful to know, for instance, when and how you derived a certain
-piece of data.  Should an issue arise, you can immediately focus on
+piece of data. Should an issue arise, you can immediately focus on
 the place it was created. Conversely, if a particular processing stage
 tends to produce excellent results, it is helpful to be able to
 understand why that is so. Ideally you can then replicate this into
@@ -186,11 +186,11 @@ effective on pieces of the infrastructure that are struggling.
 Considering the examples above, a core element of our strategy was
 _immutability_: even though our processing pipeline transformed our
 data several times over, we never changed (overwrote) the original
-data.  
+data.
 
-This is an idea we borrowed from functional programming.  Consider
+This is an idea we borrowed from functional programming. Consider
 imperative languages like C, Java and Python, in which data tends to
-be mutable.  For example, if we want to sort a list, we might call
+be mutable. For example, if we want to sort a list, we might call
 `myList.sort()`. This will sort the list in-place. Consequently, all
 references to `myList` will be changed. If we now want review
 `myList`'s original state, we're out of luck: we should have made a
@@ -201,7 +201,7 @@ tend to treat data as immutable. Our list sorting example becomes
 something closer to `myNewSortedList = sort(myList)`. This retains the
 unsorted list `myList`. One of the advantages of this immutability is
 that many functions become simply the result of processing the values
-passed in.  Given a stack trace, we can often reproduce bugs
+passed in. Given a stack trace, we can often reproduce bugs
 immediately.
 
 With mutable data, there is no guarantee that the value of a
@@ -210,16 +210,16 @@ function. Because of this, we can't necessarily rely on a stack trace
 to reproduce bugs.
 
 Concerning our data processing pipeline, we could save each step of
-transformation and debug it later.  For example, consider this
+transformation and debug it later. For example, consider this
 workflow:
 
 	rawData = downloadFrom( someSite )
 	cleanData = cleanup( rawData )
 	newArtistData = extractNewArtists( cleanData )
 
-Let's say we've uncovered a problem in the `cleanup()` function.  We
+Let's say we've uncovered a problem in the `cleanup()` function. We
 would only have to correct the code and rerun that stage of the
-pipeline.  We never replaced `rawData` and hence it would be
+pipeline. We never replaced `rawData` and hence it would be
 available for any such debugging later.
 
 To further advantage of immutability, we persisted our data under its
@@ -230,12 +230,12 @@ processing steps, which saved time when we had to debug an issue.
 ## An Example
 
 As an example, let me walk you through creating a news aggregation
-site.  Along the way, I'll apply the lessons I describe above to
+site. Along the way, I'll apply the lessons I describe above to
 demonstrate how data traceability affects the various aspects of the
 application.
 
 Let's say that our plan is to display the top stories of the day, with
-the ability to drill down by topic.  Each story will also have a link
+the ability to drill down by topic. Each story will also have a link
 to display coverage of the same event from other sources.
 
 We'll need to be able to do several things:
@@ -253,7 +253,7 @@ of the individual stories?)
 We'll seed our crawlers with a number of known news sites. Every so
 often we'll download the contents of the page and store it under a
 composite key with URL, source and timestamp, or a relational database
-row with these attributes.  (Let's say we crawl frequently-updated
+row with these attributes. (Let's say we crawl frequently-updated
 pages several times a day, and just once a day for other pages.)
 
 From each of these home pages we crawl, we'll download the individual
