@@ -222,7 +222,7 @@ would only have to correct the code and rerun that stage of the
 pipeline. We never replaced `rawData` and hence it would be
 available for any such debugging later.
 
-To further advantage of immutability, we persisted our data under a
+To take further advantage of immutability, we persisted our data under a
 compound key of identifier and
 timestamp. This helped us find the exact inputs to any of our data
 processing steps, which saved time when we had to debug an issue.
