@@ -119,7 +119,7 @@ production offering.
 
 Recall, our data would pass through several stages of transformation
 on its way to the production offering. A backout, then, required that
-we first identify potential sources of the bad data, then remove it,
+we first identify potential sources of the bad data, remove it,
 then reprocess the product without that source. (Sometimes the data
 transformations were so complex that it was easier to generate all
 permutations of source data, to spot the offender.) This is only
@@ -141,7 +141,7 @@ this allowed us to both write better code, and create more efficient
 infrastructure.
 
 From a code perspective, keeping each of our stages separate allowed us to
-reduce side effects (such as I/O contention). In turn, this made code easier to
+reduce side effects (such as I/O). In turn, this made code easier to
 test, because we didn't have to set up mocks for half of our side-effecting
 infrastructure.
 
@@ -213,17 +213,17 @@ Concerning our data processing pipeline, we could save each step of
 transformation and debug it later. For example, consider this
 workflow:
 
-	rawData = downloadFrom( someSite )
-	cleanData = cleanup( rawData )
-	newArtistData = extractNewArtists( cleanData )
+    rawData = downloadFrom(someSite)
+    cleanData = cleanup(rawData)
+    newArtistData = extractNewArtists(cleanData)
 
 Let's say we've uncovered a problem in the `cleanup()` function. We
 would only have to correct the code and rerun that stage of the
 pipeline. We never replaced `rawData` and hence it would be
 available for any such debugging later.
 
-To further advantage of immutability, we persisted our data under its
-normal identifier, and also with a compound key of identifier and
+To further advantage of immutability, we persisted our data under a
+compound key of identifier and
 timestamp. This helped us find the exact inputs to any of our data
 processing steps, which saved time when we had to debug an issue.
 
