@@ -90,7 +90,7 @@ learned-data, we would preserve the list of sources that went
 into creating that new piece of data. This allowed us to trace
 the final data product back to its constituent parts.
 
-### Weighting sources.
+### Weighting sources
 
 One of the most important reason we collected data was to learn
 about new artists, albums and songs. That said, we didn't always
